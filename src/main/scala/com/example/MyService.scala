@@ -1,6 +1,7 @@
 package com.example
 
 import akka.actor.Actor
+import scala.collection.immutable.Map
 import spray.routing._
 import spray.http._
 import MediaTypes._
@@ -22,7 +23,7 @@ class MyServiceActor extends Actor with MyService {
 
 // this trait defines our service behavior independently from the service actor
 trait MyService extends HttpService {
-
+  val items:Map[String, String] = Map[String, String]("a1" -> "111", "a2" -> "222")
   val myRoute =
     path("") {
       get {
@@ -31,6 +32,9 @@ trait MyService extends HttpService {
             <html>
               <body>
                 <h1>Say hello to <i>spray-routing</i> on <i>spray-can</i>!</h1>
+                <ul>
+                  {for(i <- items) yield <li>{i}</li>}
+                </ul>
               </body>
             </html>
           }
